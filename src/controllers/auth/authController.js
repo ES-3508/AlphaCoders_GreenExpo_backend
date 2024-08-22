@@ -42,7 +42,7 @@ export const login = asyncHandler(async (req, res) => {
     throw new Error("please provide required credentials");
   }
 
-  const user = await User.findOne({ email }).select("-password");
+  const user = await User.findOne({ email });
 
   if (!user) {
     res.status(404);
@@ -51,7 +51,10 @@ export const login = asyncHandler(async (req, res) => {
   //this will check the user password and user entered password is matching
   if (user && (await user.checkedPassword(password))) {
     setTokenCookie(user._id, res);
-    res.status(200).json(user);
+    //delete password before sending to response to improve security
+    const userWithoutPassword = user.toObject();
+    delete userWithoutPassword.password;
+    res.status(200).json(userWithoutPassword);
   } else {
     res.status(400);
     throw new Error("user credeantials not match");
