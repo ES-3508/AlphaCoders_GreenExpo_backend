@@ -2,9 +2,9 @@ import "dotenv/config";
 import express from "express";
 import cookieParser from "cookie-parser";
 import cors from "cors";
-import { ConnectMongoDb } from "./config/database";
-import authRoutes from "./routes/auth/authRoutes";
-import { errorHandler } from "./middlewares/error/errorHandler";
+import { ConnectMongoDb } from "./config/database.js";
+import authRoutes from "./routes/auth/authRoutes.js";
+import { errorHandler } from "./middlewares/error/errorHandler.js";
 
 //initialize app
 const app = express();
