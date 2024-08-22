@@ -25,7 +25,12 @@ export const register = asyncHandler(async (req, res) => {
 
   await user.save();
   setTokenCookie(user._id, res);
-  res.status(200).json(user);
+
+  //delete password before sending to response to improve security
+  const userWithoutPassword = user.toObject();
+  delete userWithoutPassword.password;
+
+  res.status(200).json(userWithoutPassword);
 });
 
 //user login
@@ -37,7 +42,7 @@ export const login = asyncHandler(async (req, res) => {
     throw new Error("please provide required credentials");
   }
 
-  const user = await User.findOne({ email });
+  const user = await User.findOne({ email }).select("-password");
 
   if (!user) {
     res.status(404);
@@ -59,7 +64,7 @@ export const getUser = asyncHandler(async (req, res) => {
     res.status(404);
     throw new Error("authorization failed please login again");
   }
-  const userDetails = await User.findById(userId);
+  const userDetails = await User.findById(userId).select("-password");
   if (!userDetails) {
     res.status(404);
     throw new Error("user not found");
