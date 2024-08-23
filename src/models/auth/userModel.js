@@ -33,6 +33,10 @@ const userSchema = new Schema(
           "Password must contain at least one uppercase letter, one lowercase letter, one digit, and one special character.",
       },
     },
+    isVerified: {
+      type: Boolean,
+      default: false,
+    },
   },
   {
     timestamps: true,
