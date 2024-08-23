@@ -5,6 +5,7 @@ import cors from "cors";
 import { ConnectMongoDb } from "./config/database.js";
 import authRoutes from "./routes/auth/authRoutes.js";
 import { errorHandler } from "./middlewares/error/errorHandler.js";
+import scheduleDeleteUnverifiedUsers from "./utils/deleteUnVerifiedUsers.js";
 
 //initialize app
 const app = express();
@@ -29,6 +30,9 @@ app.get("/", (req, res) => {
 
 //api routes
 app.use("/user", authRoutes);
+
+// Start the cron job
+scheduleDeleteUnverifiedUsers();
 
 //custom error handler
 app.use(errorHandler);
