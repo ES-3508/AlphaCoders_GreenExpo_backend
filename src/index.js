@@ -21,6 +21,12 @@ app.use(cors());
 //connecting to database
 ConnectMongoDb();
 
+
+//health check
+app.get("/", (req, res) => {
+  res.status(200).json({ status: "OK" });
+});
+
 //api routes
 app.use("/user", authRoutes);
 
